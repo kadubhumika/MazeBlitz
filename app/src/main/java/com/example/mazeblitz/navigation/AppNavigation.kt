@@ -1,15 +1,21 @@
 package com.example.mazeblitz.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mazeblitz.ui.screens.*
+import com.example.mazeblitz.viewmodel.MazeViewModel
 
 @Composable
 fun AppNavigation() {
 
     val navController = rememberNavController()
+
+    // One shared ViewModel for the whole app
+    val mazeViewModel: MazeViewModel = viewModel()
+
     NavHost(
         navController = navController,
         startDestination = "splash"
@@ -20,18 +26,9 @@ fun AppNavigation() {
         }
 
         composable("login") {
-            LoginScreen(navController)
+            LoginScreen(navController, mazeViewModel)
         }
-        composable("levels/{difficulty}") {
 
-            val difficulty =
-                it.arguments?.getString("difficulty") ?: "easy"
-
-            LevelScreen(
-                navController,
-                difficulty
-            )
-        }
         composable("home") {
             HomeScreen(navController)
         }
@@ -40,11 +37,22 @@ fun AppNavigation() {
             DifficultyScreen(navController)
         }
 
+        composable("levels/{difficulty}") {
+            val difficulty =
+                it.arguments?.getString("difficulty") ?: "easy"
+
+            LevelScreen(
+                navController,
+                difficulty
+            )
+        }
 
         composable("game/{difficulty}/{level}") {
+            val difficulty =
+                it.arguments?.getString("difficulty") ?: "easy"
 
-            val difficulty = it.arguments?.getString("difficulty") ?: "easy"
-            val level = it.arguments?.getString("level")?.toInt() ?: 1
+            val level =
+                it.arguments?.getString("level")?.toInt() ?: 1
 
             GameScreen(
                 navController,
@@ -54,15 +62,20 @@ fun AppNavigation() {
         }
 
         composable("leaderboard") {
-            LeaderboardScreen(navController)
+            LeaderboardScreen(
+                navController,
+                mazeViewModel
+            )
         }
 
         composable("history") {
-            HistoryScreen(navController)
+            HistoryScreen(
+                navController,
+                mazeViewModel
+            )
         }
-        composable(
-            "result/{difficulty}/{level}/{steps}"
-        ) {
+
+        composable("result/{difficulty}/{level}/{steps}") {
 
             val difficulty =
                 it.arguments?.getString("difficulty") ?: "easy"
@@ -77,8 +90,9 @@ fun AppNavigation() {
                 navController,
                 difficulty,
                 level,
-                steps
+                steps,
+                mazeViewModel
             )
         }
     }
-    }
+}
