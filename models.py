@@ -10,9 +10,31 @@ class Player(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
+
     username = Column(String, unique=True)
 
     city = Column(String)
+    password = Column(String, nullable=False)
+
+    easy_level_completed = Column(
+        Integer,
+        default=0
+    )
+
+    medium_level_completed = Column(
+        Integer,
+        default=0
+    )
+
+    hard_level_completed = Column(
+        Integer,
+        default=0
+    )
+
+    total_score = Column(
+        Integer,
+        default=0
+    )
     created_at = Column(
         DateTime(timezone=True),
         server_default=func.now()
