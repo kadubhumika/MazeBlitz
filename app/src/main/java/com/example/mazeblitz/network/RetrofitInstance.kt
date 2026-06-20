@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
 
-    private const val BASE_URL = "http://10.11.244.136:8000/"
+    private const val BASE_URL = "https://mazeblitz.onrender.com/"
 
     // Without this registered adapter, Gson has no idea how to turn a JSON
     // number/string into the MazeCell sealed class, since it isn't a plain
